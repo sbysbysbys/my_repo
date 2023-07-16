@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <cstdlib>
 #include <map>
+#include <unordered_set>
+
 
 enum instr_kind {
     NONE,
@@ -44,7 +46,6 @@ enum instr_biop{
 
 enum instr_unop{
     NONEUNOP,
-    POS,
     NEG,
     REVERSE
 };
@@ -79,7 +80,7 @@ enum unit
     INT,
     FLOAT,
     DOUBLE
-}
+};
 
 struct instr_ir
 {
@@ -94,8 +95,8 @@ struct instr_ir
     char *notes;//备注
 };
 
-
-std::string convertToString(T value)；
+template <typename T>
+std::string convertToString(T value);
 char* intToCharPointer(int number);
 bool get_ir(instr_ir ir,char*& output);
 bool write_ir(std::vector<instr_ir>& ir, std::ofstream& outputfile);
@@ -135,8 +136,8 @@ public:
 // 定义表达式节点结构
 struct ExpressionNode {
     std::string expression;
-    ExpressionNode leftchild;
-    ExpressionNode rightchild;
+    int leftchild;
+    int rightchild;
     dag_op op;
     int result; //是在dag里面代表的位置
 };
@@ -178,3 +179,8 @@ CFG BuildCFG(basicblock bb,std::vector<basicblock>& bbs);
 int find_in_bbs(int num,int bb_max_num[],int size);
 
 basicblock test_bb();
+
+//定值传递
+bool const_trans(instr_ir& ir,std::map<std::string, int>& is_const,std::map<std::string, int>& int_value,std::map<std::string, float>& float_value,std::map<std::string, double>& double_value);
+
+std::string op_str(instr_biop biop,instr_unop unop);

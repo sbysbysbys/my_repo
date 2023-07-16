@@ -42,8 +42,8 @@ def get_corpus():
     # print(file_paths)
     i=0
     for file in file_paths:
-        if i>=25:
-            break
+        # if i>=25:
+        #     break
         i+=1
         with open(file, "r",encoding="utf-8") as f:
             corpus.append(f.read())
